@@ -38,7 +38,7 @@
 
   <script>
     const API_KEY = "AIzaSyDa7WtrsqjBAQOgmbCxRtAGb7-GBmMbuF0";
-    const PLACE_ID = "ChIJbZIbKscPxEcRv8uhilaMJIE"; // Vervang door je Google Business Place ID
+    const PLACE_ID = "ChIJbZIbKscPxEcRv8uhilaMJIE";
 
     async function fetchReviews() {
       try {
@@ -46,7 +46,12 @@
           `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=reviews&key=${API_KEY}`
         );
         const data = await response.json();
-        displayReviews(data.result.reviews);
+
+        if (data.result && data.result.reviews) {
+          displayReviews(data.result.reviews);
+        } else {
+          console.error("Geen reviews gevonden of onjuiste respons:", data);
+        }
       } catch (error) {
         console.error("Fout bij het ophalen van reviews:", error);
       }
