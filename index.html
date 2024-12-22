@@ -8,7 +8,83 @@ async function fetchReviews() {
 
     if (apiResponse.result && apiResponse.result.reviews) {
       displayReviews(apiResponse.result.reviews);
-    } else {
+    } else <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Reviews Widget</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .reviews-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .review {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .review h3 {
+      margin: 0 0 5px;
+    }
+    .review p {
+      margin: 0;
+    }
+    .rating {
+      color: #ffb400;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wat zeggen mijn klanten over C-lutions?</h1>
+  <div id="reviews" class="reviews-container"></div>
+
+  <script>
+    const proxy = "https://cors-anywhere.herokuapp.com/";
+    const apiUrl = `${proxy}https://maps.googleapis.com/maps/api/place/details/json?place_id=ChIJbZIbKscPxEcRv8uhilaMJIE&fields=reviews&key=AIzaSyDa7WtrsqjBAQOgmbCxRtAGb7-GBmMbuF0`;
+
+    async function fetchReviews() {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (data.result && data.result.reviews) {
+          displayReviews(data.result.reviews);
+        } else {
+          console.error("Geen reviews gevonden of onjuiste respons:", data);
+        }
+      } catch (error) {
+        console.error("Fout bij het ophalen van reviews:", error);
+      }
+    }
+
+    function displayReviews(reviews) {
+      const reviewsContainer = document.getElementById("reviews");
+      reviews.forEach(review => {
+        const reviewElement = document.createElement("div");
+        reviewElement.classList.add("review");
+        reviewElement.innerHTML = `
+          <h3>${review.author_name}</h3>
+          <div class="rating">${"⭐".repeat(review.rating)}</div>
+          <p>${review.text}</p>
+        `;
+        reviewsContainer.appendChild(reviewElement);
+      });
+    }
+
+    fetchReviews();
+  </script>
+</body>
+</html>
+
       console.error("Geen reviews gevonden of onjuiste respons:", apiResponse);
     }
   } catch (error) {
